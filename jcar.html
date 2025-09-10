@@ -1,0 +1,2330 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JCar Serviços Automotivos - Funilaria e Guincho 24h</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root {
+            --primary: #e63946;
+            --secondary: #1d3557;
+            --accent: #fca311;
+            --light: #f1faee;
+            --dark: #2b2d42;
+            --nav-bg: #ffffff;
+            --nav-text: #1d3557;
+            --btn-primary: #e63946;
+            --btn-primary-hover: #c1121f;
+            --primary-light: #f8aaaf;
+            --secondary-light: #a8bad3;
+            --accent-light: #fee0a3;
+            --gray: #8d99ae;
+            --gray-light: #edf2f4;
+            --success: #2a9d8f;
+            --border-radius: 12px;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+           100% { transform: scale(1); }
+        }
+        
+        /* Header */
+        header {
+            background: var(--nav-bg);
+            color: var(--nav-text);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            color: var(--primary);
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin: 0 1rem;
+        }
+        
+        .nav-links a {
+            color: var(--nav-text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .contact-btn {
+            background-color: var(--btn-primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-btn:hover {
+            background-color: var(--btn-primary-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        /* Hero Section com Vídeo do Vimeo */
+        .hero {
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .vimeo-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+        
+        .vimeo-background iframe {
+            width: 100vw;
+            height: 56.25vw; /* Given a 16:9 aspect ratio, 9/16*100 = 56.25 */
+            min-height: 100vh;
+            min-width: 177.77vh; /* Given a 16:9 aspect ratio, 16/9*100 = 177.77 */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.1); /* Overlay mais claro */
+            z-index: -1;
+        }
+        
+        .hero-content {
+            text-align: center;
+            color: white;
+            max-width: 800px;
+            padding: 2rem;
+            z-index: 2;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 2.5rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--btn-primary-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-secondary {
+            background-color: #1d3557; /* Azul */
+            color: white;
+            border: 2px solid #1d3557;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #14213d;
+            border-color: #14213d;
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .video-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .video-controls button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        
+        .video-controls button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Content Section abaixo do vídeo */
+        .content-section {
+            padding: 5rem 2rem;
+            background: white;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .content-container h1 {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .content-container p {
+            font-size: 1.5rem;
+            color: #555;
+            margin-bottom: 2.5rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+        
+        .content-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+        
+        /* Services Section */
+        .services {
+            padding: 5rem 2rem;
+            background-color: #f8f9fa;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .services-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .service-icon {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+        
+        .service-content {
+            padding: 1.5rem;
+        }
+        
+        .service-content h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .service-content ul {
+            list-style: none;
+            margin-top: 1rem;
+        }
+        
+        .service-content li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .service-content li i {
+            color: var(--accent);
+            margin-right: 0.5rem;
+        }
+        
+        /* How We Work Section */
+        .how-we-work {
+            padding: 5rem 2rem;
+            background: linear-gradient(to right, #f8f9fa, #e9ecef);
+        }
+        
+        .how-we-work-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        
+        .process-content h2 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .process-content p {
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .process-steps {
+            list-style: none;
+        }
+        
+        .process-steps li {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .process-steps li:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .step-icon {
+            min-width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .step-text {
+            flex: 1;
+        }
+        
+        .step-text h4 {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-text p {
+            margin-bottom: 0;
+            color: #666;
+        }
+        
+        .process-video {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .video-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border-radius: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .play-btn:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            background: var(--primary);
+        }
+        
+        /* About Section */
+        .about {
+            padding: 5rem 2rem;
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            color: white;
+        }
+        
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        
+        .about-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .about-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .features {
+            list-style: none;
+        }
+        
+        .features li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .features li i {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+        
+        .about-image {
+            position: relative;
+            animation: float 5s ease-in-out infinite;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .about-image img {
+            width: 100%;
+            display: block;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 5rem 2rem;
+            background-color: var(--light);
+        }
+        
+        .testimonials-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .testimonial-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #ddd;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #777;
+        }
+        
+        .testimonial-info h4 {
+            color: var(--secondary);
+        }
+        
+        .testimonial-info p {
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .testimonial-text {
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .stars {
+            color: var(--accent);
+            margin-top: 1rem;
+        }
+        
+        /* CTA Section */
+        .cta {
+            padding: 5rem 2rem;
+            background: linear-gradient(rgba(29, 53, 87, 0.9), rgba(29, 53, 87, 0.9)), url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+        }
+        
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta p {
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #e63946; /* Vermelho */
+            color: white;
+            padding: 3rem 2rem;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-col h3 {
+            color: white; /* Alterado para branco */
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .footer-col p, .footer-col li {
+            margin-bottom: 0.8rem;
+            opacity: 0.9;
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col li {
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-col li i {
+            margin-right: 0.5rem;
+            color: white; /* Alterado para branco */
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.2);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            background-color: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        /* Modal de Orçamento */
+        .budget-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+        
+        .budget-modal {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+            animation: slideUp 0.4s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            padding: 1.5rem 2rem;
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: white;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .modal-subtitle {
+            font-weight: 400;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .modal-body {
+            padding: 2rem;
+        }
+        
+        /* Progress Steps */
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+        
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: var(--gray-light);
+            z-index: 1;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            z-index: 2;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 3;
+        }
+        
+        .step-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: white;
+            border: 4px solid var(--gray-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--gray);
+            margin-bottom: 0.8rem;
+            transition: var(--transition);
+        }
+        
+        .step.active .step-icon {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+            color: white;
+            box-shadow: 0 0 0 6px var(--secondary-light);
+        }
+        
+        .step.completed .step-icon {
+            background-color: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+        
+        .step.completed .step-icon::after {
+            content: '✓';
+        }
+        
+        .step-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--gray);
+            text-align: center;
+        }
+        
+        .step.active .step-label {
+            color: var(--secondary);
+        }
+        
+        /* Formulário */
+        .form-step {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+        
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+        
+        .step-title {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .step-title i {
+            color: var(--primary);
+            font-size: 1.3rem;
+        }
+        
+        .budget-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 600;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-label i {
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+        
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: var(--gray-light);
+        }
+        
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: white;
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+        
+        .form-input.error,
+        .form-select.error,
+        .form-textarea.error {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.2);
+        }
+        
+        .error-message {
+            color: var(--primary);
+            font-size: 0.85rem;
+            margin-top: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        /* Serviços */
+        .service-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 0.8rem;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1.2rem;
+            background-color: var(--gray-light);
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+        
+        .service-item:hover {
+            background-color: #e6e9ed;
+        }
+        
+        .add-service-btn {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .add-service-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .remove-service-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .remove-service-btn:hover {
+            background-color: #c1121f;
+            transform: scale(1.1);
+        }
+        
+        /* Resumo do Orçamento */
+        .budget-summary {
+            background-color: var(--gray-light);
+            padding: 1.8rem;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .summary-title {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #dce1e8;
+        }
+        
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #dce1e8;
+            color: var(--secondary);
+        }
+        
+        .summary-note {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+            font-style: italic;
+        }
+        
+        /* Botões de Navegação */
+        .form-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-light);
+        }
+        
+        .modal-btn {
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .btn-prev {
+            background-color: white;
+            color: var(--secondary);
+            border: 2px solid var(--secondary);
+        }
+        
+        .btn-prev:hover {
+            background-color: var(--secondary-light);
+        }
+        
+        .btn-next {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+        }
+        
+        .btn-next:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn-submit {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn-submit:hover {
+            background-color: #21867a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn-pdf {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .btn-pdf:hover {
+            background-color: #e69500;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* Confirmação */
+        .confirmation-step {
+            text-align: center;
+            padding: 2rem;
+            animation: fadeIn 0.6s ease-out;
+            display: none;
+        }
+        
+        .confirmation-icon {
+            font-size: 5rem;
+            color: var(--success);
+            margin-bottom: 1.5rem;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .confirmation-title {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .confirmation-message {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .content-container h1 {
+                font-size: 2.2rem;
+            }
+            
+            .content-container p {
+                font-size: 1.2rem;
+            }
+            
+            .content-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .about-container, .how-we-work-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+            }
+            
+            .video-controls {
+                bottom: 10px;
+                right: 10px;
+            }
+            
+            .video-controls button {
+                width: 35px;
+                height: 35px;
+            }
+            
+            /* Responsividade do Modal */
+            .modal-body {
+                padding: 1.5rem;
+            }
+            
+            .budget-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            
+            .service-item {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+            
+            .progress-steps {
+                margin-bottom: 2rem;
+            }
+            
+            .step-label {
+                font-size: 0.8rem;
+            }
+            
+            .form-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .modal-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">JCar <span>Serviços</span></div>
+            <ul class="nav-links">
+                <li><a href="#services">Serviços</a></li>
+                <li><a href="#process">Como Trabalhamos</a></li>
+                <li><a href="#about">Sobre</a></li>
+                <li><a href="#testimonials">Avaliações</a></li>
+                <li><a href="#contact">Contato</a></li>
+                <li><a href="#" id="openBudgetModalLink">Orçamento Online</a></li>
+            </ul>
+            <button class="contact-btn"><i class="fas fa-phone"></i> (11) 95578-4995</button>
+        </div>
+    </header>
+
+    <!-- Hero Section com Vídeo do Vimeo -->
+    <section class="hero">
+        <div class="vimeo-background">
+            <iframe src="https://player.vimeo.com/video/1117197901?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1" 
+                    frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+        </div>
+        <div class="video-overlay"></div>
+        
+        <div class="hero-content">
+            <!-- Textos removidos conforme solicitado -->
+        </div>
+        
+        <div class="video-controls">
+            <button id="mute-unmute"><i class="fas fa-volume-up"></i></button>
+        </div>
+    </section>
+
+    <!-- Content Section abaixo do vídeo -->
+    <section class="content-section">
+        <div class="content-container">
+            <h1>Soluções Completas em Serviços Automotivos</h1>
+            <p>Funilaria, pintura, martelinho de ouro e serviços de guincho 24 horas. Atendemos todas as companhias de seguros!</p>
+            <div class="content-buttons">
+                <a href="#contact" class="btn btn-primary"><i class="fas fa-truck"></i> Solicitar Guincho</a>
+                <a href="#services" class="btn btn-secondary"><i class="fas fa-car-crash"></i> Conhecer Serviços</a>
+                <a href="#" id="openBudgetModalBtn" class="btn btn-secondary"><i class="fas fa-file-invoice-dollar"></i> Orçamento Online</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="section-title">
+            <h2>Nossos Serviços</h2>
+            <p>Oferecemos soluções completas para seu veículo com qualidade e agilidade</p>
+        </div>
+        <div class="services-container">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-car"></i>
+                </div>
+                <div class="service-content">
+                    <h3>Funilaria e Pintura</h3>
+                    <p>Serviços especializados em funilaria e pintura com qualidade superior</p>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Funilaria completa</li>
+                        <li><i class="fas fa-check"></i> Pintura profissional</li>
+                        <li><i class="fas fa-check"></i> Martelinho de ouro</li>
+                        <li><i class="fas fa-check"></i> Polimento e cristalização</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-truck"></i>
+                </div>
+                <div class="service-content">
+                    <h3>Serviços de Guincho</h3>
+                    <p>Atendimento 24 horas para todos os tipos de situação</p>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Guincho planário (plataforma)</li>
+                        <li><i class="fas fa-check"></i> Guincho de gancho (cabo de aço)</li>
+                        <li><i class="fas fa-check"></i> Guincho de reboque (cavalete)</li>
+                        <li><i class="fas fa-check"></i> Reboque para moto</li>
+                        <li><i class="fas fa-check"></i> Resgate em acidentes graves</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <div class="service-content">
+                    <h3>Serviços Especializados</h3>
+                    <p>Soluções para necessidades específicas do seu veículo</p>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Transporte de máquinas e equipamentos</li>
+                        <li><i class="fas fa-check"></i> Guincho para veículos pesados</li>
+                        <li><i class="fas fa-check"></i> Guincho para veículos de luxo e clássicos</li>
+                        <li><i class="fas fa-check"></i> Leva combustível</li>
+                        <li><i class="fas fa-check"></i> Mudanças</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How We Work Section -->
+    <section id="process" class="how-we-work">
+        <div class="how-we-work-container">
+            <div class="process-content">
+                <h2>Como Trabalhamos: Excelência em Cada Etapa</h2>
+                <p>Veja de perto o cuidado e a precisão que aplicamos em cada serviço. Nosso processo é transparente, eficiente e focado em devolver seu veículo em perfeitas condições.</p>
+                
+                <ul class="process-steps">
+                    <li>
+                        <div class="step-icon">1</div>
+                        <div class="step-text">
+                            <h4>Avaliação Detalhada dos Danos</h4>
+                            <p>Nossos especialistas examinam minuciosamente seu veículo para identificar todos os danos and elaborar um orçamento preciso.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-icon">2</div>
+                        <div class="step-text">
+                            <h4>Reparo e Pintura com Tecnologia de Ponta</h4>
+                            <p>Utilizamos equipamentos modernos e técnicas avançadas para restaurar seu veículo à sua condição original.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-icon">3</div>
+                        <div class="step-text">
+                            <h4>Entrega e Satisfação Garantida</h4>
+                            <p>Realizamos testes rigorosos antes da entrega para garantir que tudo esteja perfeito e você fique 100% satisfeito.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="process-video">
+                <div class="video-placeholder">
+                    <i class="fas fa-play-circle" style="font-size: 3rem; margin-right: 10px;"></i>
+                    Vídeo Demonstrativo do Nosso Processo
+                </div>
+                <div class="play-btn">
+                    <i class="fas fa-play"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="about-container">
+            <div class="about-content">
+                <h2>Por que escolher a JCar?</h2>
+                <p>Com anos de experiência no mercado, a JCar Serviços Automotivos se destaca pelo compromisso com a qualidade e satisfação dos clientes.</p>
+                <ul class="features">
+                    <li><i class="fas fa-check-circle"></i> Atendimento 24 horas</li>
+                    <li><i class="fas fa-check-circle"></i> Trabalhamos com todas as companhias de seguros</li>
+                    <li><i class="fas fa-check-circle"></i> Aceitamos todos os cartões de crédito e débito</li>
+                    <li><i class="fas fa-check-circle"></i> Profissionais qualificados e equipamentos modernos</li>
+                    <li><i class="fas fa-check-circle"></i> Avaliação 5 estrelas no Google</li>
+                </ul>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1565689223836-06670c6fa255?ixlib=rb-4.0.3" alt="Oficina JCar">
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials">
+        <div class="section-title">
+            <h2>Avaliações dos Clientes</h2>
+            <p>Confira o que nossos clientes falam sobre nossos serviços</p>
+        </div>
+        <div class="testimonials-container">
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="testimonial-info">
+                        <h4>Portugal Lava Rápido</h4>
+                        <p>Local Guide · 34 avaliações</p>
+                    </div>
+                </div>
+                <div class="testimonial-text">
+                    <p>"Serviço nota 10! Atendimento rápido e profissional. Recomendo a todos!"</p>
+                </div>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="testimonial-info">
+                        <h4>Luciana</h4>
+                        <p>Local Guide · 13 avaliações</p>
+                    </div>
+                </div>
+                <div class="testimonial-text">
+                    <p>"Ótimo! Resolveram meu problema rapidamente. Profissionais muito competentes."</p>
+                </div>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="testimonial-info">
+                        <h4>Fernando Andrade</h4>
+                        <p>4 avaliações · 1 foto</p>
+                    </div>
+                </div>
+                <div class="testimonial-text">
+                    <p>"Serviço de qualidade excepcional. Fiquei muito satisfeito com o atendimento e o resultado."</p>
+                </div>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="cta-container">
+            <h2>Precisa de ajuda agora?</h2>
+            <p>Nossa equipe está pronta para atendê-lo 24 horas por dia, 7 dias por semana</p>
+            <div class="cta-buttons">
+                <a href="tel:1159213868" class="btn btn-primary"><i class="fas fa-phone"></i> (11) 5921-3868</a>
+                <a href="tel:11955784995" class="btn btn-secondary"><i class="fas fa-mobile-alt"></i> (11) 95578-4995</a>
+                <a href="#" id="openBudgetModalBtn2" class="btn btn-secondary"><i class="fas fa-file-invoice-dollar"></i> Orçamento Online</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>JCar Serviços</h3>
+                <p>Soluções completas em serviços automotivos com qualidade e agilidade.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Contato</h3>
+                <ul>
+                    <li><i class="fas fa-phone"></i> (11) 5921-3868</li>
+                    <li><i class="fas fa-mobile-alt"></i> (11) 95578-4995</li>
+                    <li><i class="fas fa-credit-card"></i> Aceitamos todos os cartões</li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Endereço</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> Rua Angico, 10</li>
+                    <li>Condomínio Vargem Grande</li>
+                    <li>Parelheiros, São Paulo - SP</li>
+                    <li>CEP: 04896-400</li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Horário de Funcionamento</h3>
+                <ul>
+                    <li><i class="fas fa-clock"></i> Guincho: 24 horas</li>
+                    <li><i class="fas fa-clock"></i> Oficina: Seg a Sex: 8h-18h</li>
+                    <li><i class="fas fa-clock"></i> Sábado: 8h-14h</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2023 JCar Serviços Automotivos - Todos os direitos reservados</p>
+        </div>
+    </footer>
+
+    <!-- Modal de Orçamento -->
+    <div class="budget-modal-overlay" id="budgetModalOverlay">
+        <div class="budget-modal">
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-title"><i class="fas fa-file-invoice-dollar"></i> Orçamento Online</h2>
+                    <p class="modal-subtitle">Solicite seu orçamento em poucos passos</p>
+                </div>
+                <span class="close-modal" id="closeBudgetModal">&times;</span>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Indicador de Progresso -->
+                <div class="progress-steps">
+                    <div class="progress-bar" id="progressBar"></div>
+                    
+                    <div class="step active" data-step="1">
+                        <div class="step-icon">1</div>
+                        <div class="step-label">Dados Pessoais</div>
+                    </div>
+                    
+                    <div class="step" data-step="2">
+                        <div class="step-icon">2</div>
+                        <div class="step-label">Veículo</div>
+                    </div>
+                    
+                    <div class="step" data-step="3">
+                        <div class="step-icon">3</div>
+                        <div class="step-label">Serviços</div>
+                    </div>
+                    
+                    <div class="step" data-step="4">
+                        <div class="step-icon">4</div>
+                        <div class="step-label">Revisão</div>
+                    </div>
+                </div>
+                
+                <form id="budgetForm">
+                    <!-- Passo 1: Dados Pessoais -->
+                    <div class="form-step active" data-step="1">
+                        <h3 class="step-title"><i class="fas fa-user"></i> Seus dados</h3>
+                        
+                        <div class="budget-form">
+                            <div class="form-group">
+                                <label for="name" class="form-label"><i class="fas fa-signature"></i> Nome Completo</label>
+                                <input type="text" id="name" name="name" class="form-input" placeholder="Seu nome completo" required>
+                                <div class="error-message" id="nameError"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email" class="form-label"><i class="fas fa-envelope"></i> E-mail</label>
+                                <input type="email" id="email" name="email" class="form-input" placeholder="seu@email.com" required>
+                                <div class="error-message" id="emailError"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone" class="form-label"><i class="fas fa-phone"></i> Telefone</label>
+                                <input type="tel" id="phone" name="phone" class="form-input" placeholder="(11) 99999-9999" required>
+                                <div class="error-message" id="phoneError"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contactPreference" class="form-label"><i class="fas fa-comment"></i> Preferência de Contato</label>
+                                <select id="contactPreference" name="contactPreference" class="form-select" required>
+                                    <option value="">Como prefere ser contactado?</option>
+                                    <option value="whatsapp">WhatsApp</option>
+                                    <option value="ligacao">Ligação</option>
+                                    <option value="email">E-mail</option>
+                                </select>
+                                <div class="error-message" id="contactPreferenceError"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-buttons">
+                            <div></div> <!-- Espaço vazio para alinhar o próximo botão à direita -->
+                            <button type="button" class="modal-btn btn-next" id="nextStep1">Próximo <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                    
+                    <!-- Passo 2: Dados do Veículo -->
+                    <div class="form-step" data-step="2">
+                        <h3 class="step-title"><i class="fas fa-car"></i> Dados do Veículo</h3>
+                        
+                        <div class="budget-form">
+                            <div class="form-group">
+                                <label for="vehicleType" class="form-label"><i class="fas fa-car-side"></i> Tipo de Veículo</label>
+                                <select id="vehicleType" name="vehicleType" class="form-select" required>
+                                    <option value="">Selecione o tipo...</option>
+                                    <option value="carro">Carro</option>
+                                    <option value="moto">Moto</option>
+                                    <option value="caminhao">Caminhão</option>
+                                    <option value="onibus">Ônibus</option>
+                                    <option value="outro">Outro</option>
+                                </select>
+                                <div class="error-message" id="vehicleTypeError"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="vehicleBrand" class="form-label"><i class="fas fa-tag"></i> Marca</label>
+                                <input type="text" id="vehicleBrand" name="vehicleBrand" class="form-input" placeholder="Ex: Volkswagen, Ford, etc." required>
+                                <div class="error-message" id="vehicleBrandError"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="vehicleModel" class="form-label"><i class="fas fa-cog"></i> Modelo</label>
+                                <input type="text" id="vehicleModel" name="vehicleModel" class="form-input" placeholder="Ex: Gol, Fiesta, etc." required>
+                                <div class="error-message" id="vehicleModelError"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="vehicleYear" class="form-label"><i class="fas fa-calendar"></i> Ano</label>
+                                <input type="number" id="vehicleYear" name="vehicleYear" class="form-input" placeholder="Ex: 2020" min="1950" max="2023" required>
+                                <div class="error-message" id="vehicleYearError"></div>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="vehicleProblem" class="form-label"><i class="fas fa-exclamation-triangle"></i> Descrição do Problema</label>
+                                <textarea id="vehicleProblem" name="vehicleProblem" class="form-textarea" placeholder="Descreva em detalhes o problema ou serviço necessário..." required></textarea>
+                                <div class="error-message" id="vehicleProblemError"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-buttons">
+                            <button type="button" class="modal-btn btn-prev" id="prevStep2"><i class="fas fa-arrow-left"></i> Anterior</button>
+                            <button type="button" class="modal-btn btn-next" id="nextStep2">Próximo <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                    
+                    <!-- Passo 3: Serviços -->
+                    <div class="form-step" data-step="3">
+                        <h3 class="step-title"><i class="fas fa-tools"></i> Serviços Desejados</h3>
+                        
+                        <div id="serviceItems">
+                            <div class="service-item">
+                                <select class="form-select service-type" required>
+                                    <option value="">Selecione o serviço...</option>
+                                    <option value="funilaria">Funilaria</option>
+                                    <option value="pintura">Pintura</option>
+                                    <option value="martelinho">Martelinho de Ouro</option>
+                                    <option value="guincho">Serviço de Guincho</option>
+                                    <option value="polimento">Polimento e Cristalização</option>
+                                </select>
+                                
+                                <input type="number" class="form-input service-quantity" value="1" min="1" placeholder="Qtd" required>
+                                
+                                <input type="text" class="form-input service-price" placeholder="R$ 0,00" readonly>
+                                
+                                <button type="button" class="remove-service-btn" disabled>&times;</button>
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="add-service-btn" id="addServiceBtn">
+                            <i class="fas fa-plus"></i> Adicionar Serviço
+                        </button>
+                        
+                        <div class="budget-summary">
+                            <h4 class="summary-title"><i class="fas fa-receipt"></i> Resumo do Orçamento</h4>
+                            
+                            <div class="summary-item">
+                                <span>Subtotal:</span>
+                                <span id="subtotal">R$ 0,00</span>
+                            </div>
+                            
+                            <div class="summary-item">
+                                <span>Desconto:</span>
+                                <span id="discount">R$ 0,00</span>
+                            </div>
+                            
+                            <div class="summary-total">
+                                <span>Total:</span>
+                                <span id="total">R$ 0,00</span>
+                            </div>
+                            
+                            <p class="summary-note">* Este orçamento tem validade de 30 dias. Valores sujeitos a confirmação após avaliação técnica.</p>
+                        </div>
+                        
+                        <div class="form-buttons">
+                            <button type="button" class="modal-btn btn-prev" id="prevStep3"><i class="fas fa-arrow-left"></i> Anterior</button>
+                            <button type="button" class="modal-btn btn-next" id="nextStep3">Próximo <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                    
+                    <!-- Passo 4: Revisão e Confirmação -->
+                    <div class="form-step" data-step="4">
+                        <h3 class="step-title"><i class="fas fa-clipboard-check"></i> Revise seu Orçamento</h3>
+                        
+                        <div class="budget-summary">
+                            <h4 class="summary-title"><i class="fas fa-user"></i> Dados Pessoais</h4>
+                            <div class="summary-item">
+                                <span>Nome:</span>
+                                <span id="reviewName">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>E-mail:</span>
+                                <span id="reviewEmail">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Telefone:</span>
+                                <span id="reviewPhone">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Preferência de Contato:</span>
+                                <span id="reviewContactPreference">-</span>
+                            </div>
+                        </div>
+                        
+                        <div class="budget-summary">
+                            <h4 class="summary-title"><i class="fas fa-car"></i> Dados do Veículo</h4>
+                            <div class="summary-item">
+                                <span>Tipo:</span>
+                                <span id="reviewVehicleType">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Marca/Modelo:</span>
+                                <span id="reviewVehicleBrandModel">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Ano:</span>
+                                <span id="reviewVehicleYear">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Descrição do Problema:</span>
+                                <span id="reviewVehicleProblem">-</span>
+                            </div>
+                        </div>
+                        
+                        <div class="budget-summary">
+                            <h4 class="summary-title"><i class="fas fa-tools"></i> Serviços Solicitados</h4>
+                            <div id="reviewServices">
+                                <div class="summary-item">
+                                    <span>Nenhum serviço selecionado</span>
+                                    <span></span>
+                                </div>
+                            </div>
+                            
+                            <div class="summary-total">
+                                <span>Total Estimado:</span>
+                                <span id="reviewTotal">R$ 0,00</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-buttons">
+                            <button type="button" class="modal-btn btn-prev" id="prevStep4"><i class="fas fa-arrow-left"></i> Anterior</button>
+                            <button type="button" class="modal-btn btn-pdf" id="generatePdfBtn"><i class="fas fa-file-pdf"></i> Baixar PDF</button>
+                            <button type="submit" class="modal-btn btn-submit"><i class="fas fa-paper-plane"></i> Enviar Solicitação</button>
+                        </div>
+                    </div>
+                </form>
+                
+                <!-- Confirmação de Envio -->
+                <div class="confirmation-step" id="confirmationStep">
+                    <div class="confirmation-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    
+                    <h3 class="confirmation-title">Solicitação Enviada com Sucesso!</h3>
+                    
+                    <p class="confirmation-message">
+                        Obrigado por solicitar um orçamento conosco. Em breve nossa equipe entrará em contato para confirmar os detalhes e agendar uma avaliação, se necessário.
+                    </p>
+                    
+                    <button type="button" class="modal-btn btn-next" id="closeModalBtn">
+                        <i class="fas fa-times"></i> Fechar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://player.vimeo.com/api/player.js"></script>
+    <script>
+        // Animação de scroll suave para os links de navegação
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Controle de áudio do vídeo do Vimeo
+        const muteButton = document.getElementById('mute-unmute');
+        let isMuted = false;
+        
+        // Inicializar o player do Vimeo
+        const iframe = document.querySelector('iframe');
+        const player = new Vimeo.Player(iframe);
+        
+        // Definir o vídeo como mudo inicialmente
+        player.setVolume(0).then(function() {
+            isMuted = true;
+            muteButton.innerHTML = '<i class="fas fa-volume-mute"></i>';
+        });
+        
+        // Alternar mudo/ativar som
+        muteButton.addEventListener('click', function() {
+            if (isMuted) {
+                player.setVolume(0.5).then(function() {
+                    isMuted = false;
+                    muteButton.innerHTML = '<i class="fas fa-volume-up"></i>';
+                });
+            } else {
+                player.setVolume(0).then(function() {
+                    isMuted = true;
+                    muteButton.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                });
+            }
+        });
+        
+        // Adicionar classe de animação aos elementos quando eles entram na viewport
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                }
+            });
+        }, observerOptions);
+        
+        // Observar elementos para animação
+        document.querySelectorAll('.service-card, .testimonial-card').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Controle do Modal de Orçamento
+        const budgetModalOverlay = document.getElementById('budgetModalOverlay');
+        const openBudgetModalLinks = document.querySelectorAll('#openBudgetModalLink, #openBudgetModalBtn, #openBudgetModalBtn2');
+        const closeBudgetModal = document.getElementById('closeBudgetModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        
+        // Abrir modal
+        openBudgetModalLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                budgetModalOverlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden'; // Impede scroll no body quando modal está aberto
+            });
+        });
+        
+        // Fechar modal
+        function closeBudgetModalFunc() {
+            budgetModalOverlay.style.display = 'none';
+            document.body.style.overflow = ''; // Restaura scroll no body
+        }
+        
+        closeBudgetModal.addEventListener('click', closeBudgetModalFunc);
+        closeModalBtn.addEventListener('click', closeBudgetModalFunc);
+        
+        // Fechar modal ao clicar fora do conteúdo
+        budgetModalOverlay.addEventListener('click', function(e) {
+            if (e.target === budgetModalOverlay) {
+                closeBudgetModalFunc();
+            }
+        });
+        
+        // Variáveis globais para o formulário de orçamento
+        let currentStep = 1;
+        const totalSteps = 4;
+        
+        // Inicialização do formulário
+        document.addEventListener('DOMContentLoaded', function() {
+            initApp();
+        });
+        
+        function initApp() {
+            updateProgressBar();
+            calculateTotal();
+            setupEventListeners();
+        }
+        
+        function setupEventListeners() {
+            // Navegação entre passos
+            document.getElementById('nextStep1').addEventListener('click', () => nextStep(1));
+            document.getElementById('nextStep2').addEventListener('click', () => nextStep(2));
+            document.getElementById('nextStep3').addEventListener('click', () => nextStep(3));
+            
+            document.getElementById('prevStep2').addEventListener('click', () => prevStep(2));
+            document.getElementById('prevStep3').addEventListener('click', () => prevStep(3));
+            document.getElementById('prevStep4').addEventListener('click', () => prevStep(4));
+            
+            // Adicionar serviço
+            document.getElementById('addServiceBtn').addEventListener('click', addService);
+            
+            // Gerar PDF
+            document.getElementById('generatePdfBtn').addEventListener('click', generatePDF);
+            
+            // Eventos de input para cálculos em tempo real
+            document.querySelectorAll('.service-type, .service-quantity').forEach(element => {
+                element.addEventListener('change', calculateTotal);
+            });
+            
+            // Envio do formulário
+            document.getElementById('budgetForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitForm();
+            });
+        }
+        
+        // Funções de Navegação
+        function nextStep(step) {
+            if (validateStep(step)) {
+                document.querySelector(`.form-step[data-step="${step}"]`).classList.remove('active');
+                document.querySelector(`.step[data-step="${step}"]`).classList.remove('active');
+                
+                currentStep = step + 1;
+                
+                document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('active');
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+                
+                if (currentStep === 4) {
+                    updateReviewSection();
+                }
+                
+                updateProgressBar();
+                budgetModalOverlay.scrollTo(0, 0);
+            }
+        }
+        
+        function prevStep(step) {
+            document.querySelector(`.form-step[data-step="${step}"]`).classList.remove('active');
+            document.querySelector(`.step[data-step="${step}"]`).classList.remove('active');
+            
+            currentStep = step - 1;
+            
+            document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add('active');
+            document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+            
+            updateProgressBar();
+            budgetModalOverlay.scrollTo(0, 0);
+        }
+        
+        function updateProgressBar() {
+            const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            document.getElementById('progressBar').style.width = `${progressPercentage}%`;
+            
+            // Marcar etapas anteriores como concluídas
+            document.querySelectorAll('.step').forEach((step, index) => {
+                const stepNumber = parseInt(step.getAttribute('data-step'));
+                if (stepNumber < currentStep) {
+                    step.classList.add('completed');
+                } else if (stepNumber === currentStep) {
+                    step.classList.add('active');
+                    step.classList.remove('completed');
+                } else {
+                    step.classList.remove('active', 'completed');
+                }
+            });
+        }
+        
+        // Validação de formulário
+        function validateStep(step) {
+            let isValid = true;
+            
+            if (step === 1) {
+                const name = document.getElementById('name');
+                const email = document.getElementById('email');
+                const phone = document.getElementById('phone');
+                const contactPreference = document.getElementById('contactPreference');
+                
+                if (!name.value.trim()) {
+                    showError(name, 'Por favor, informe seu nome completo');
+                    isValid = false;
+                } else {
+                    clearError(name);
+                }
+                
+                if (!email.value.trim() || !isValidEmail(email.value)) {
+                    showError(email, 'Por favor, informe um e-mail válido');
+                    isValid = false;
+                } else {
+                    clearError(email);
+                }
+                
+                if (!phone.value.trim() || !isValidPhone(phone.value)) {
+                    showError(phone, 'Por favor, informe um telefone válido');
+                    isValid = false;
+                } else {
+                    clearError(phone);
+                }
+                
+                if (!contactPreference.value) {
+                    showError(contactPreference, 'Por favor, selecione como prefere ser contactado');
+                    isValid = false;
+                } else {
+                    clearError(contactPreference);
+                }
+            }
+            
+            if (step === 2) {
+                const vehicleType = document.getElementById('vehicleType');
+                const vehicleBrand = document.getElementById('vehicleBrand');
+                const vehicleModel = document.getElementById('vehicleModel');
+                const vehicleYear = document.getElementById('vehicleYear');
+                const vehicleProblem = document.getElementById('vehicleProblem');
+                
+                if (!vehicleType.value) {
+                    showError(vehicleType, 'Por favor, selecione o tipo de veículo');
+                    isValid = false;
+                } else {
+                    clearError(vehicleType);
+                }
+                
+                if (!vehicleBrand.value.trim()) {
+                    showError(vehicleBrand, 'Por favor, informe a marca do veículo');
+                    isValid = false;
+                } else {
+                    clearError(vehicleBrand);
+                }
+                
+                if (!vehicleModel.value.trim()) {
+                    showError(vehicleModel, 'Por favor, informe o modelo do veículo');
+                    isValid = false;
+                } else {
+                    clearError(vehicleModel);
+                }
+                
+                if (!vehicleYear.value || vehicleYear.value < 1950 || vehicleYear.value > new Date().getFullYear() + 1) {
+                    showError(vehicleYear, 'Por favor, informe um ano válido');
+                    isValid = false;
+                } else {
+                    clearError(vehicleYear);
+                }
+                
+                if (!vehicleProblem.value.trim() || vehicleProblem.value.length < 10) {
+                    showError(vehicleProblem, 'Por favor, descreva o problema com mais detalhes');
+                    isValid = false;
+                } else {
+                    clearError(vehicleProblem);
+                }
+            }
+            
+            if (step === 3) {
+                const serviceItems = document.querySelectorAll('.service-item');
+                let hasService = false;
+                
+                serviceItems.forEach(item => {
+                    const serviceType = item.querySelector('.service-type');
+                    if (serviceType.value) {
+                        hasService = true;
+                        clearError(serviceType);
+                    } else {
+                        showError(serviceType, 'Por favor, selecione um serviço');
+                        isValid = false;
+                    }
+                });
+                
+                if (!hasService) {
+                    alert('Por favor, adicione pelo menos um serviço');
+                    isValid = false;
+                }
+            }
+            
+            return isValid;
+        }
+        
+        function showError(input, message) {
+            input.classList.add('error');
+            const errorElement = document.getElementById(`${input.id}Error`);
+            if (errorElement) {
+                errorElement.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+            }
+        }
+        
+        function clearError(input) {
+            input.classList.remove('error');
+            const errorElement = document.getElementById(`${input.id}Error`);
+            if (errorElement) {
+                errorElement.innerHTML = '';
+            }
+        }
+        
+        function isValidEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+        
+        function isValidPhone(phone) {
+            const re = /^\(?\d{2}\)?[\s-]?\d{4,5}-?\d{4}$/;
+            return re.test(phone);
+        }
+        
+        // Gerenciamento de Serviços
+        function addService() {
+            const serviceItems = document.getElementById('serviceItems');
+            const newService = document.createElement('div');
+            newService.className = 'service-item';
+            newService.innerHTML = `
+                <select class="form-select service-type" required>
+                    <option value="">Selecione o serviço...</option>
+                    <option value="funilaria">Funilaria</option>
+                    <option value="pintura">Pintura</option>
+                    <option value="martelinho">Martelinho de Ouro</option>
+                    <option value="guincho">Serviço de Guincho</option>
+                    <option value="polimento">Polimento e Cristalização</option>
+                </select>
+                
+                <input type="number" class="form-input service-quantity" value="1" min="1" placeholder="Qtd" required>
+                
+                <input type="text" class="form-input service-price" placeholder="R$ 0,00" readonly>
+                
+                <button type="button" class="remove-service-btn">&times;</button>
+            `;
+            serviceItems.appendChild(newService);
+            
+            // Adicionar event listeners aos novos elementos
+            newService.querySelector('.service-type').addEventListener('change', calculateTotal);
+            newService.querySelector('.service-quantity').addEventListener('change', calculateTotal);
+            newService.querySelector('.remove-service-btn').addEventListener('click', function() {
+                removeService(this);
+            });
+            
+            // Habilitar botões de remover de todos os serviços
+            document.querySelectorAll('.remove-service-btn').forEach(btn => {
+                btn.disabled = false;
+            });
+        }
+        
+        function removeService(button) {
+            const serviceItems = document.querySelectorAll('.service-item');
+            if (serviceItems.length > 1) {
+                const serviceItem = button.closest('.service-item');
+                serviceItem.remove();
+                calculateTotal();
+                
+                // Desabilitar botão de remover se houver apenas um serviço
+                if (serviceItems.length === 2) { // 2 porque um será removido
+                    document.querySelector('.remove-service-btn').disabled = true;
+                }
+            }
+        }
+        
+        // Cálculo de Orçamento
+        function calculateTotal() {
+            const serviceItems = document.querySelectorAll('.service-item');
+            let subtotal = 0;
+            
+            serviceItems.forEach(item => {
+                const type = item.querySelector('.service-type').value;
+                const quantity = parseInt(item.querySelector('.service-quantity').value) || 0;
+                let price = 0;
+                
+                // Definir preços base para cada serviço
+                switch(type) {
+                    case 'funilaria':
+                        price = 350;
+                        break;
+                    case 'pintura':
+                        price = 600;
+                        break;
+                    case 'martelinho':
+                        price = 180;
+                        break;
+                    case 'guincho':
+                        price = 250;
+                        break;
+                    case 'polimento':
+                        price = 300;
+                        break;
+                    default:
+                        price = 0;
+                }
+                
+                const totalPrice = price * quantity;
+                subtotal += totalPrice;
+                
+                // Atualizar o preço no campo
+                if (type) {
+                    item.querySelector('.service-price').value = `R$ ${totalPrice.toFixed(2)}`;
+                } else {
+                    item.querySelector('.service-price').value = 'R$ 0,00';
+                }
+            });
+            
+            // Calcular desconto (10% para orçamentos acima de R$ 500)
+            const discount = subtotal > 500 ? subtotal * 0.1 : 0;
+            const total = subtotal - discount;
+            
+            // Atualizar os totais na interface
+            document.getElementById('subtotal').textContent = `R$ ${subtotal.toFixed(2)}`;
+            document.getElementById('discount').textContent = `R$ ${discount.toFixed(2)}`;
+            document.getElementById('total').textContent = `R$ ${total.toFixed(2)}`;
+        }
+        
+        // Atualizar seção de revisão
+        function updateReviewSection() {
+            document.getElementById('reviewName').textContent = document.getElementById('name').value;
+            document.getElementById('reviewEmail').textContent = document.getElementById('email').value;
+            document.getElementById('reviewPhone').textContent = document.getElementById('phone').value;
+            
+            const contactPreference = document.getElementById('contactPreference');
+            document.getElementById('reviewContactPreference').textContent = contactPreference.options[contactPreference.selectedIndex].text;
+            
+            const vehicleType = document.getElementById('vehicleType');
+            document.getElementById('reviewVehicleType').textContent = vehicleType.options[vehicleType.selectedIndex].text;
+            
+            document.getElementById('reviewVehicleBrandModel').textContent = 
+                `${document.getElementById('vehicleBrand').value} ${document.getElementById('vehicleModel').value}`;
+            
+            document.getElementById('reviewVehicleYear').textContent = document.getElementById('vehicleYear').value;
+            document.getElementById('reviewVehicleProblem').textContent = document.getElementById('vehicleProblem').value;
+            
+            // Atualizar serviços na revisão
+            const reviewServices = document.getElementById('reviewServices');
+            reviewServices.innerHTML = '';
+            
+            const serviceItems = document.querySelectorAll('.service-item');
+            let hasServices = false;
+            
+            serviceItems.forEach(item => {
+                const type = item.querySelector('.service-type');
+                const serviceName = type.options[type.selectedIndex].text;
+                const quantity = item.querySelector('.service-quantity').value || 1;
+                const price = item.querySelector('.service-price').value;
+                
+                if (serviceName !== 'Selecione o serviço...') {
+                    hasServices = true;
+                    const serviceElement = document.createElement('div');
+                    serviceElement.className = 'summary-item';
+                    serviceElement.innerHTML = `
+                        <span>${serviceName} (Qtd: ${quantity})</span>
+                        <span>${price}</span>
+                    `;
+                    reviewServices.appendChild(serviceElement);
+                }
+            });
+            
+            if (!hasServices) {
+                reviewServices.innerHTML = `
+                    <div class="summary-item">
+                        <span>Nenhum serviço selecionado</span>
+                        <span></span>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('reviewTotal').textContent = document.getElementById('total').textContent;
+        }
+        
+        // Gerar PDF
+        function generatePDF() {
+            alert('Funcionalidade de geração de PDF seria implementada aqui com a biblioteca jsPDF');
+            // Na implementação real, isso geraria um PDF com todos os dados do orçamento
+        }
+        
+        // Envio do formulário
+        function submitForm() {
+            if (validateStep(4)) {
+                // Simular envio do formulário
+                document.querySelectorAll('.form-step').forEach(step => {
+                    step.style.display = 'none';
+                });
+                
+                document.getElementById('confirmationStep').style.display = 'block';
+                
+                // Aqui você enviaria os dados para o servidor
+                console.log('Formulário enviado com sucesso!');
+            }
+        }
+    </script>
+</body>
+</html>
